@@ -30,7 +30,6 @@ class ProfilesController < ApplicationController
     @profile = Profile.find_by(id: params[:id])
     if @profile.update(profile_params)
       redirect_to @profile, notice: 'Información Actualizada.' # Direccionar a salida de session
-      render @profile 
     else
       render :edit, notice: 'No se pudo Actualizar el Bullying'
     end
@@ -39,7 +38,7 @@ class ProfilesController < ApplicationController
   private
 
   def profile_params
-    params.require(:profile).permit(:name, :last_name, :user_id, 
+    params.require(:profile).permit(:name, :last_name, :user_id, :avatar, 
                                     comment_attributes: [:comment, :profile_id])
   end
 
