@@ -1,7 +1,6 @@
 %h1 Bienvenido al Bullying Game 
 %h2 ¡Que comience el Juego!
 %h1 Registre sus Datos
-=current_user.id.to_i
 = form_with model: @profile, local: true do |form|
   - if @profile.errors.any?
     = pluralize(@profile.errors.count, "error")
@@ -9,21 +8,19 @@
     %ul
       - @profile.errors.full_messages.each do |message|
         %li= message
-  / .field
-  /   = form.file_field :avatar
   .field
     = form.label :name, 'Nombre'
     %input{type: :text, name: 'profile[name]'}
   .field
     = form.label :last_name, 'Apellido'
-    %input{type: :text, last_name: 'profile[last_name]'}
+    %input{type: :text, name: 'profile[last_name]'}
   .field
-    %input{type: :hidden, name: 'profile[user_id]', value: current_user.id.to_i }
-  / %h4 Bullying
-  / = form.fields_for :comments do |comment|
-  /   .field
-  /     = comment.label :commet, "Ingrese su Bullying aquí:"
-  /     = comment.text_field :comment
+    %input{type: :hidden, name: 'profile[user_id]', value: current_user.id }
+  %h4 Bullying
+  = form.fields_for :comment_attributes do |comment|
+    .field
+      = comment.label :comment, "Comentario"
+      = comment.text_field :comment
 
   = link_to 'Volver', profiles_path
-  = form.submit 'Registrar Bullying'
+  = form.submit 'Registrar'
