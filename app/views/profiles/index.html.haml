@@ -1,0 +1,9 @@
+%h1 Listado
+- @profiles.to_a.each do |profile| 
+	=profile.name
+	%br
+	=profile.last_name
+	%br
+	=profile.comment.comment
+	%br
+	%br

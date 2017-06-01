@@ -1,0 +1,26 @@
+%h1 Bienvenido al Bullying Game 
+%h2 ¡Que comience el Juego!
+%h1 Editar datos de #{@profile.name} #{@profile.last_name}
+= form_with model: @profile, local: true do |form|
+  - if @profile.errors.any?
+    = pluralize(@profile.errors.count, "error")
+    prohibited this profile from being saved:
+    %ul
+      - @profile.errors.full_messages.each do |message|
+        %li= message
+  .field
+    = form.label :name, 'Nombre'
+    %input{type: :text, name: 'profile[name]', id: :profile_name, value: form.object.name}
+  .field
+    = form.label :last_name, 'Apellido'
+    %input{type: :text, name: 'profile[last_name]', id: :profile_last_name, value: form.object.last_name}
+  .field
+    %input{type: :hidden, name: 'profile[user_id]', value: current_user.id }
+  %h4 Bullying
+  = form.fields_for :comments_attributes do |comment|
+    .field
+      = comment.label :comment, "Comentario"
+      %input{type: :text, name: 'profile[comment_attributes[comment]]', method: 'post',id: :profile_comment_attributes_comment, value: form.object.comment.comment }
+
+  = link_to 'Volver', profiles_path
+  = form.submit 'Registrar'

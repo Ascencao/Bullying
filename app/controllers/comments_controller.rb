@@ -1,41 +1,34 @@
 class CommentsController < ApplicationController
+  before_action :set_comment, only: [ :edit, :update]
 	before_action :authenticate_user!
 
-  def new
-    @profile = Profile.find_by(id: params[:profile_id])
-  end
-
-  def create
+  def index
     @profile = Profile.find_by(id: params[:profile_id])
     if @profile
-      @comment = @profile.comment.build(comment_params)
-      if @comment.save
-        respond_to do |format|
-        format.html { redirect_to comments_path, notice: 'person was successfully registered.' }
-        format.json { head :no_content }
-      else
-        render :new
-      end
+      @comments = @profile.comment
+      render json: @comments
     else
-      redirect_to comments_path, notice: 'comment not found'
+      redirect_to new_profile_path
     end
   end
 
   def edit
-    @comment = Comment.find_by(id: params[:id])
   end
 
   def update
-    @comment = Comment.find_by(id: params[:id])
     if @comment.update(comment_params)
       respond_to do |format|
-        format.html { redirect_to comments_path, notice: 'person was successfully destroyed.' }
+        format.html { redirect_to comments_path, notice: 'Bullying Actualizado' }
         format.json { head :no_content }
       end
     end
   end
 
   private
+
+  def set_comment
+    @comment = Comment.find_by(id: params[:profile_id])
+  end
 
   def comment_params
     params.require(:comment).permit(:comment, :profile_id)
