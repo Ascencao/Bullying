@@ -8,6 +8,8 @@
     %ul
       - @profile.errors.full_messages.each do |message|
         %li= message
+  .field 
+    = form.file_field :avatar 
   .field
     = form.label :name, 'Nombre'
     %input{type: :text, name: 'profile[name]'}
